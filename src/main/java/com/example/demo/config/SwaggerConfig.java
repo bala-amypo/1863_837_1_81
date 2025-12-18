@@ -13,16 +13,17 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        return new OpenAPI().addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
-                .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("My REST API")
-                        .description("Some custom description of API.")
-                        .version("1.0"));
-    }
-
-    private SecurityScheme createAPIKeyScheme() {
-        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
-                .bearerFormat("JWT")
-                .scheme("bearer");
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Digital Asset Lifecycle & Audit Trail API")
+                        .description("Asset management system with lifecycle tracking")
+                        .version("1.0"))
+                .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
+                .components(new Components()
+                        .addSecuritySchemes("Bearer Authentication",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")));
     }
 }
