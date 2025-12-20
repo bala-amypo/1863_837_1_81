@@ -14,13 +14,12 @@ public class Asset {
     @Column(unique = true)
     private String assetTag;
 
-    private String assetType; // LAPTOP / DESKTOP / PRINTER / NETWORK DEVICE / OTHER
-
+    private String assetType; 
     private String model;
 
     private LocalDate purchaseDate;
 
-    private String status; // AVAILABLE / ASSIGNED / IN_REPAIR / TRANSFERRED / DISPOSED
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "current_holder_id")
