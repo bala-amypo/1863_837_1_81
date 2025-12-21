@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/repository/TransferRecordRepository.java
 package com.example.demo.repository;
 
 import com.example.demo.entity.TransferRecord;
@@ -9,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface TransferRecordRepository extends JpaRepository<TransferRecord, Long> {
-    List<TransferRecord> findByAsset_Id(Long assetId);   // ← changed
+
+    List<TransferRecord> findByAsset_Id(Long assetId);
 }

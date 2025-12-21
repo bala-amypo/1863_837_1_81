@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/security/JwtUtil.java
 package com.example.demo.security;
 
 import com.example.demo.entity.User;
@@ -27,7 +26,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // Used by many security tests
     public String generateToken(Map<String, Object> extraClaims, String subject) {
         return Jwts.builder()
                 .setClaims(extraClaims)
@@ -38,7 +36,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Required by t61-t73
     public String generateTokenForUser(User user) {
         Map<String, Object> claims = Map.of(
                 "userId", user.getId(),
@@ -86,7 +83,6 @@ public class JwtUtil {
                 .getBody();
     }
 
-    // Used in t69-t72
     public io.jsonwebtoken.Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())

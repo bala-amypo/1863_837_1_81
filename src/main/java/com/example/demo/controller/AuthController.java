@@ -31,11 +31,15 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest registerRequest) {
-        User user = new User();
-        user.setFullName(registerRequest.getFullName());
-        user.setEmail(registerRequest.getEmail());
-        user.setDepartment(registerRequest.getDepartment());
-        user.setPassword(registerRequest.getPassword());
+        // Use the all-args constructor (role and createdAt will be set by service/prePersist)
+        User user = new User(null,
+                registerRequest.getFullName(),
+                registerRequest.getEmail(),
+                registerRequest.getDepartment(),
+                null,  // role will default to "USER"
+                registerRequest.getPassword(),
+                null); // createdAt will be set on persist
+
         return ResponseEntity.ok(userService.registerUser(user));
     }
 
@@ -46,6 +50,7 @@ public class AuthController {
         );
 
         final User user = userService.getUserByEmail(loginRequest.getEmail());
-        return ResponseEntity.ok(jwtUtil.generateToken(user));
+        // Use the correct method name from the new JwtUtil
+        return ResponseEntity.ok(jwtUtil.generateTokenForUser(user));
     }
 }
