@@ -42,6 +42,11 @@ public class Asset {
         if (status == null) status = "AVAILABLE";
         if (createdAt == null) createdAt = LocalDateTime.now();
     }
+    
+    public void setAssignedTo(User user) {
+    this.assignedTo = user;
+}
+
 
     public Long getId() { return id; }
     public String getAssetTag() { return assetTag; }
