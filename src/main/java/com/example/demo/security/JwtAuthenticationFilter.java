@@ -13,7 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-
 import com.example.demo.repository.UserRepository;
 import com.example.demo.entity.User;
 
@@ -48,7 +47,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             User user = userRepository.findByEmail(username).get();
 
-            if (jwtUtil.validateToken(jwt, user)) {
+            // FIXED: Use isTokenValid with email instead of validateToken with User object
+            if (jwtUtil.isTokenValid(jwt, user.getEmail())) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
