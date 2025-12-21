@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/repository/LifecycleEventRepository.java
 package com.example.demo.repository;
 
 import com.example.demo.entity.LifecycleEvent;
@@ -9,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface LifecycleEventRepository extends JpaRepository<LifecycleEvent, Long> {
-    List<LifecycleEvent> findByAsset_Id(Long assetId);   // ← changed
+
+    List<LifecycleEvent> findByAsset_Id(Long assetId);
 }
