@@ -22,15 +22,11 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody RegisterRequest registerRequest) {
-        // Use the all-args constructor
-        User user = new User(null,
-                registerRequest.getFullName(),
-                registerRequest.getEmail(),
-                registerRequest.getDepartment(),
-                null,  // role defaults to "USER"
-                registerRequest.getPassword(),
-                null); // createdAt set on persist
-
+        User user = new User();
+        user.setFullName(registerRequest.getFullName());
+        user.setEmail(registerRequest.getEmail());
+        user.setDepartment(registerRequest.getDepartment());
+        user.setPassword(registerRequest.getPassword());
         return ResponseEntity.ok(userService.registerUser(user));
     }
 
