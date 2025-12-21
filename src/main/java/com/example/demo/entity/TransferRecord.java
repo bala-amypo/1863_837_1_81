@@ -72,3 +72,14 @@ public class TransferRecord {
         this.approvedBy = approvedBy;
     }
 }
+
+// TransferRecord.java – add this constructor
+public TransferRecord(Long id, Asset asset, String fromDepartment, String toDepartment,
+                      LocalDate transferDate, User approvedBy) {
+    this.id = id;
+    this.asset = asset;
+    this.fromDepartment = fromDepartment;
+    this.toDepartment = toDepartment;
+    this.transferDate = transferDate;
+    this.approvedBy = approvedBy;
+}

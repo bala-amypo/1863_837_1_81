@@ -79,3 +79,14 @@ public class LifecycleEvent {
         this.performedBy = performedBy;
     }
 }
+
+// LifecycleEvent.java – add this constructor
+public LifecycleEvent(Long id, Asset asset, String eventType, String eventDescription,
+                      LocalDateTime eventDate, User performedBy) {
+    this.id = id;
+    this.asset = asset;
+    this.eventType = eventType;
+    this.eventDescription = eventDescription;
+    this.eventDate = eventDate;
+    this.performedBy = performedBy;
+}
