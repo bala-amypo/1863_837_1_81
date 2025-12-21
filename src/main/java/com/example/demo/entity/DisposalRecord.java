@@ -34,19 +34,6 @@ public class DisposalRecord {
         }
     }
 
-    // DisposalRecord.java – add this constructor
-public DisposalRecord(Long id, Asset asset, String disposalMethod, LocalDate disposalDate,
-                      User approvedBy, String notes, LocalDateTime createdAt) {
-    this.id = id;
-    this.asset = asset;
-    this.disposalMethod = disposalMethod;
-    this.disposalDate = disposalDate;
-    this.approvedBy = approvedBy;
-    this.notes = notes;
-    this.createdAt = createdAt;
-}
-
-
     public Long getId() {
         return id;
     }
@@ -103,4 +90,3 @@ public DisposalRecord(Long id, Asset asset, String disposalMethod, LocalDate dis
         this.createdAt = createdAt;
     }
 }
-

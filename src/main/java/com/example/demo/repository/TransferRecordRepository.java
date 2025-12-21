@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TransferRecordRepository extends JpaRepository<TransferRecord, Long> {
-
-    // CRITICAL: Must be findByAsset_Id (with underscore)
-    List<TransferRecord> findByAsset_Id(Long assetId);
+    List<TransferRecord> findByAssetId(Long assetId);
 }

@@ -37,20 +37,6 @@ public class Asset {
         }
     }
 
-    // Asset.java – add this constructor
-public Asset(Long id, String assetTag, String assetType, String model, LocalDate purchaseDate,
-             String status, User currentHolder, LocalDateTime createdAt) {
-    this.id = id;
-    this.assetTag = assetTag;
-    this.assetType = assetType;
-    this.model = model;
-    this.purchaseDate = purchaseDate;
-    this.status = status;
-    this.currentHolder = currentHolder;
-    this.createdAt = createdAt;
-}
-
-
     public Long getId() {
         return id;
     }
@@ -115,4 +101,3 @@ public Asset(Long id, String assetTag, String assetType, String model, LocalDate
         this.createdAt = createdAt;
     }
 }
-
