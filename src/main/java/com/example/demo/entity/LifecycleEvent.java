@@ -11,74 +11,68 @@ public class LifecycleEvent {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "asset_id")
     private Asset asset;
 
-    private String eventType;
-    private String description;
+    private String eventType; 
+
+    private String eventDescription;
+
     private LocalDateTime eventDate;
 
     @ManyToOne
+    @JoinColumn(name = "performed_by_id")
     private User performedBy;
 
-    public LifecycleEvent() {
-    }
-
-    public LifecycleEvent(Long id,
-                          Asset asset,
-                          String eventType,
-                          String description,
-                          LocalDateTime eventDate,
-                          User performedBy) {
-        this.id = id;
-        this.asset = asset;
-        this.eventType = eventType;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.performedBy = performedBy;
+    @PrePersist
+    public void prePersist() {
+        if (eventDate == null) {
+            eventDate = LocalDateTime.now();
+        }
     }
 
     public Long getId() {
         return id;
     }
 
-    public Asset getAsset() {
-        return asset;
-    }
-
-    public String getEventType() {
-        return eventType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalDateTime getEventDate() {
-        return eventDate;
-    }
-
-    public User getPerformedBy() {
-        return performedBy;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Asset getAsset() {
+        return asset;
     }
 
     public void setAsset(Asset asset) {
         this.asset = asset;
     }
 
+    public String getEventType() {
+        return eventType;
+    }
+
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getEventDescription() {
+        return eventDescription;
+    }
+
+    public void setEventDescription(String eventDescription) {
+        this.eventDescription = eventDescription;
+    }
+
+    public LocalDateTime getEventDate() {
+        return eventDate;
     }
 
     public void setEventDate(LocalDateTime eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public User getPerformedBy() {
+        return performedBy;
     }
 
     public void setPerformedBy(User performedBy) {

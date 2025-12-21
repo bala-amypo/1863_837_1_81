@@ -9,7 +9,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,40 +23,29 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public AuthController(
-            UserService userService,
-            AuthenticationManager authenticationManager,
-            JwtUtil jwtUtil) {
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-
+    public ResponseEntity<User> register(@RequestBody RegisterRequest registerRequest) {
         User user = new User();
-        user.setFullName(request.getFullName());
-        user.setEmail(request.getEmail());
-        user.setDepartment(request.getDepartment());
-        user.setPassword(request.getPassword());
-
+        user.setFullName(registerRequest.getFullName());
+        user.setEmail(registerRequest.getEmail());
+        user.setDepartment(registerRequest.getDepartment());
+        user.setPassword(registerRequest.getPassword());
         return ResponseEntity.ok(userService.registerUser(user));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
 
-        User user = userService.getUserByEmail(request.getEmail());
-        String token = jwtUtil.generateTokenForUser(user);
-
-        return ResponseEntity.ok(token);
+        final User user = userService.getUserByEmail(loginRequest.getEmail());
+        return ResponseEntity.ok(jwtUtil.generateToken(user));
     }
 }

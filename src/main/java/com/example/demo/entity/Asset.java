@@ -1,28 +1,41 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "assets")
 public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(unique = true)
+    private String assetTag;
 
-    private String type;
+    private String assetType; 
+    private String model;
+
+    private LocalDate purchaseDate;
 
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "assigned_to")
-    private User assignedTo;
+    @JoinColumn(name = "current_holder_id")
+    private User currentHolder;
 
-    // =====================
-    // Getters and Setters
-    // =====================
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (status == null) {
+            status = "AVAILABLE";
+        }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 
     public Long getId() {
         return id;
@@ -32,20 +45,36 @@ public class Asset {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAssetTag() {
+        return assetTag;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAssetTag(String assetTag) {
+        this.assetTag = assetTag;
     }
 
-    public String getType() {
-        return type;
+    public String getAssetType() {
+        return assetType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAssetType(String assetType) {
+        this.assetType = assetType;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
     public String getStatus() {
@@ -56,11 +85,19 @@ public class Asset {
         this.status = status;
     }
 
-    public User getAssignedTo() {
-        return assignedTo;
+    public User getCurrentHolder() {
+        return currentHolder;
     }
 
-    public void setAssignedTo(User assignedTo) {
-        this.assignedTo = assignedTo;
+    public void setCurrentHolder(User currentHolder) {
+        this.currentHolder = currentHolder;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

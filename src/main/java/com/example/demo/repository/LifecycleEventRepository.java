@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface LifecycleEventRepository extends JpaRepository<LifecycleEvent, Long> {
-
-    List<LifecycleEvent> findByAsset_Id(Long assetId);
+    List<LifecycleEvent> findByAssetId(Long assetId);
 }

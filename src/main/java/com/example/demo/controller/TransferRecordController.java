@@ -19,38 +19,18 @@ public class TransferRecordController {
         this.transferRecordService = transferRecordService;
     }
 
-    /**
-     * Transfer an asset from one user to another
-     */
-    @PostMapping
-    public ResponseEntity<TransferRecord> transferAsset(
-            @RequestParam Long assetId,
-            @RequestParam Long fromUserId,
-            @RequestParam Long toUserId) {
-
-        TransferRecord record =
-                transferRecordService.transferAsset(assetId, fromUserId, toUserId);
-
-        return ResponseEntity.ok(record);
+    @PostMapping("/{assetId}")
+    public ResponseEntity<TransferRecord> createTransferRecord(@PathVariable Long assetId, @RequestBody TransferRecord record) {
+        return ResponseEntity.ok(transferRecordService.createTransfer(assetId, record));
     }
 
-    /**
-     * Get transfer history of an asset
-     */
     @GetMapping("/asset/{assetId}")
     public ResponseEntity<List<TransferRecord>> getTransferHistory(@PathVariable Long assetId) {
-        return ResponseEntity.ok(
-                transferRecordService.getTransfersForAsset(assetId)
-        );
+        return ResponseEntity.ok(transferRecordService.getTransfersForAsset(assetId));
     }
 
-    /**
-     * Get a specific transfer record
-     */
     @GetMapping("/{id}")
     public ResponseEntity<TransferRecord> getTransfer(@PathVariable Long id) {
-        return ResponseEntity.ok(
-                transferRecordService.getTransfer(id)
-        );
+        return ResponseEntity.ok(transferRecordService.getTransfer(id));
     }
 }
