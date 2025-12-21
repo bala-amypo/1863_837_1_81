@@ -24,6 +24,19 @@ public class TransferRecord {
     @JoinColumn(name = "approved_by_id")
     private User approvedBy;
 
+    // ================== CONSTRUCTOR ADDED HERE ==================
+    public TransferRecord(Long id, Asset asset, String fromDepartment, String toDepartment,
+                          LocalDate transferDate, User approvedBy) {
+        this.id = id;
+        this.asset = asset;
+        this.fromDepartment = fromDepartment;
+        this.toDepartment = toDepartment;
+        this.transferDate = transferDate;
+        this.approvedBy = approvedBy;
+    }
+    // ============================================================
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -71,15 +84,4 @@ public class TransferRecord {
     public void setApprovedBy(User approvedBy) {
         this.approvedBy = approvedBy;
     }
-}
-
-// TransferRecord.java – add this constructor
-public TransferRecord(Long id, Asset asset, String fromDepartment, String toDepartment,
-                      LocalDate transferDate, User approvedBy) {
-    this.id = id;
-    this.asset = asset;
-    this.fromDepartment = fromDepartment;
-    this.toDepartment = toDepartment;
-    this.transferDate = transferDate;
-    this.approvedBy = approvedBy;
 }
