@@ -91,14 +91,3 @@ public class User {
     }
 }
 
-// User.java – add this constructor
-public User(Long id, String fullName, String email, String department, String role,
-            String password, LocalDateTime createdAt) {
-    this.id = id;
-    this.fullName = fullName;
-    this.email = email;
-    this.department = department;
-    this.role = role;
-    this.password = password;
-    this.createdAt = createdAt;
-}
