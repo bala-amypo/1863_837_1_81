@@ -20,15 +20,19 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("My REST API")
                         .description("Some custom description of API.")
-                        .version("1.0"))
+                        .version("1.0")
+                )
                 .servers(List.of(
                         new Server().url("https://9361.pro604cr.amypo.ai/")
                 ))
                 .components(new Components()
-                        .addSecuritySchemes("Bearer Authentication",
+                        .addSecuritySchemes(
+                                "Bearer Authentication",
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
-                                        .bearerFormat("JWT")));
+                                        .bearerFormat("JWT")
+                        )
+                );
     }
 }
