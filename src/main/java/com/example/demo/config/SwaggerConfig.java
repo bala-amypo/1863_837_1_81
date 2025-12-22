@@ -23,7 +23,7 @@ public class SwaggerConfig {
                         .version("1.0")
                 )
                 .servers(List.of(
-                        new Server().url("https://9253.pro604cr.amypo.ai/")
+                        new Server().url("https://9115.pro604cr.amypo.ai/")
                 ))
                 .components(new Components()
                         .addSecuritySchemes(
