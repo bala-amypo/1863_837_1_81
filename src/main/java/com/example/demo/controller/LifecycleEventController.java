@@ -2,15 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.LifecycleEvent;
 import com.example.demo.service.LifecycleEventService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/events")
-@Tag(name = "Lifecycle Event Management")
+@RequestMapping("/api/lifecycle-events")
 public class LifecycleEventController {
 
     private final LifecycleEventService lifecycleEventService;
@@ -19,18 +15,23 @@ public class LifecycleEventController {
         this.lifecycleEventService = lifecycleEventService;
     }
 
-    @PostMapping("/{assetId}/{userId}")
-    public ResponseEntity<LifecycleEvent> logEvent(@PathVariable Long assetId, @PathVariable Long userId, @RequestBody LifecycleEvent event) {
-        return ResponseEntity.ok(lifecycleEventService.logEvent(assetId, userId, event));
+    @PostMapping
+    public LifecycleEvent createEvent(@RequestBody LifecycleEvent event) {
+        return lifecycleEventService.createEvent(event);
+    }
+
+    @GetMapping
+    public List<LifecycleEvent> getAllEvents() {
+        return lifecycleEventService.getAllEvents();
     }
 
     @GetMapping("/asset/{assetId}")
-    public ResponseEntity<List<LifecycleEvent>> getEventsForAsset(@PathVariable Long assetId) {
-        return ResponseEntity.ok(lifecycleEventService.getEventsForAsset(assetId));
+    public List<LifecycleEvent> getEventsByAsset(@PathVariable Long assetId) {
+        return lifecycleEventService.getEventsByAssetId(assetId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LifecycleEvent> getEvent(@PathVariable Long id) {
-        return ResponseEntity.ok(lifecycleEventService.getEvent(id));
+    public LifecycleEvent getEvent(@PathVariable Long id) {
+        return lifecycleEventService.getEvent(id);
     }
 }

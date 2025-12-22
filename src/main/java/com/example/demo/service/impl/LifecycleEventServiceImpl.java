@@ -34,4 +34,10 @@ public class LifecycleEventServiceImpl implements LifecycleEventService {
         }
         return events;
     }
+
+    @Override
+    public LifecycleEvent getEvent(Long id) {
+        return lifecycleEventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Lifecycle event not found"));
+    }
 }
