@@ -1,4 +1,3 @@
-// com/example/demo/service/impl/DisposalRecordServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Asset;
@@ -38,6 +37,10 @@ public class DisposalRecordServiceImpl implements DisposalRecordService {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
+        if (disposal.getApprovedBy() == null || disposal.getApprovedBy().getId() == null) {
+            throw new ValidationException("Approver is required");
+        }
+
         User approver = userRepository.findById(disposal.getApprovedBy().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -52,7 +55,7 @@ public class DisposalRecordServiceImpl implements DisposalRecordService {
         disposal.setAsset(asset);
         disposal.setApprovedBy(approver);
 
-        // Critical for test t85: change status to DISPOSED
+        // Critical for test t85
         asset.setStatus("DISPOSED");
         assetRepository.save(asset);
 
