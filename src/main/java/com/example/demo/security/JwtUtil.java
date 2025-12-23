@@ -22,12 +22,12 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long expirationTimeMs;
 
-    // No-arg constructor for tests
+    // No-arg constructor required by the test class
     public JwtUtil() {
         this.secretKey = Keys.hmacShaKeyFor(
                 "test-secret-for-unit-tests-only-this-is-very-important-1234567890abcdef"
                         .getBytes(StandardCharsets.UTF_8));
-        this.expirationTimeMs = 864_000_000L; // 10 days
+        this.expirationTimeMs = 864_000_000L; // ~10 days
     }
 
     public JwtUtil(
@@ -80,7 +80,7 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // This method is called by the test class → must return Jws<Claims>
+    // This exact method signature + return type is expected by the test
     public Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
