@@ -19,7 +19,7 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long expirationTime;
 
-    // No-arg constructor for test class
+    // Required by test: no-arg constructor
     public JwtUtil() {
         this.secretKey = Keys.hmacShaKeyFor(
                 "test-secret-for-unit-tests-only-1234567890abcdef".getBytes(StandardCharsets.UTF_8));
@@ -85,7 +85,7 @@ public class JwtUtil {
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = parseToken(token).getBody(); // use .getBody() internally
+        final Claims claims = parseToken(token).getBody(); // internal use .getBody()
         return claimsResolver.apply(claims);
     }
 }
