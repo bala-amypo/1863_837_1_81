@@ -1,37 +1,74 @@
-// TransferRecord.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "transfer_records")
 public class TransferRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asset_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "asset_id")
     private Asset asset;
 
-    @Column(name = "from_department")
     private String fromDepartment;
 
-    @Column(name = "to_department")
     private String toDepartment;
 
-    @Column(name = "transfer_date")
     private LocalDate transferDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "approved_by_id")
     private User approvedBy;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
+    }
+
+    public String getFromDepartment() {
+        return fromDepartment;
+    }
+
+    public void setFromDepartment(String fromDepartment) {
+        this.fromDepartment = fromDepartment;
+    }
+
+    public String getToDepartment() {
+        return toDepartment;
+    }
+
+    public void setToDepartment(String toDepartment) {
+        this.toDepartment = toDepartment;
+    }
+
+    public LocalDate getTransferDate() {
+        return transferDate;
+    }
+
+    public void setTransferDate(LocalDate transferDate) {
+        this.transferDate = transferDate;
+    }
+
+    public User getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(User approvedBy) {
+        this.approvedBy = approvedBy;
+    }
 }
