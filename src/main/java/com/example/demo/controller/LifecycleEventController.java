@@ -20,7 +20,10 @@ public class LifecycleEventController {
     }
 
     @PostMapping("/{assetId}/{userId}")
-    public ResponseEntity<LifecycleEvent> logEvent(@PathVariable Long assetId, @PathVariable Long userId, @RequestBody LifecycleEvent event) {
+    public ResponseEntity<LifecycleEvent> logEvent(
+            @PathVariable Long assetId,
+            @PathVariable Long userId,
+            @RequestBody LifecycleEvent event) {
         return ResponseEntity.ok(lifecycleEventService.logEvent(assetId, userId, event));
     }
 

@@ -27,6 +27,7 @@ public class UserController {
         user.setEmail(registerRequest.getEmail());
         user.setDepartment(registerRequest.getDepartment());
         user.setPassword(registerRequest.getPassword());
+
         return ResponseEntity.ok(userService.registerUser(user));
     }
 

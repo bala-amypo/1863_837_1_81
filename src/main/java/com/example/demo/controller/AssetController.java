@@ -36,7 +36,9 @@ public class AssetController {
     }
 
     @PutMapping("/status/{id}")
-    public ResponseEntity<Asset> updateAssetStatus(@PathVariable Long id, @RequestBody AssetStatusUpdateRequest statusUpdateRequest) {
-        return ResponseEntity.ok(assetService.updateAssetStatus(id, statusUpdateRequest.getStatus()));
+    public ResponseEntity<Asset> updateAssetStatus(
+            @PathVariable Long id,
+            @RequestBody AssetStatusUpdateRequest statusUpdateRequest) {
+        return ResponseEntity.ok(assetService.updateStatus(id, statusUpdateRequest.getStatus()));
     }
 }

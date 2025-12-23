@@ -20,7 +20,9 @@ public class TransferRecordController {
     }
 
     @PostMapping("/{assetId}")
-    public ResponseEntity<TransferRecord> createTransferRecord(@PathVariable Long assetId, @RequestBody TransferRecord record) {
+    public ResponseEntity<TransferRecord> createTransferRecord(
+            @PathVariable Long assetId,
+            @RequestBody TransferRecord record) {
         return ResponseEntity.ok(transferRecordService.createTransfer(assetId, record));
     }
 
