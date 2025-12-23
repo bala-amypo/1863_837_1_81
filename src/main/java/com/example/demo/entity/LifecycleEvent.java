@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -10,25 +10,25 @@ public class LifecycleEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String eventType;
-    private String description;
-
     @ManyToOne
+    @JoinColumn(name = "asset_id")
     private Asset asset;
+
+    private String eventType; 
+
+    private String eventDescription;
 
     private LocalDateTime eventDate;
 
-    public LifecycleEvent() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "performed_by_id")
+    private User performedBy;
 
-    public LifecycleEvent(Long id, String eventType,
-                          String description, Asset asset,
-                          LocalDateTime eventDate) {
-        this.id = id;
-        this.eventType = eventType;
-        this.description = description;
-        this.asset = asset;
-        this.eventDate = eventDate;
+    @PrePersist
+    public void prePersist() {
+        if (eventDate == null) {
+            eventDate = LocalDateTime.now();
+        }
     }
 
     public Long getId() {
@@ -39,22 +39,6 @@ public class LifecycleEvent {
         this.id = id;
     }
 
-    public String getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Asset getAsset() {
         return asset;
     }
@@ -63,11 +47,35 @@ public class LifecycleEvent {
         this.asset = asset;
     }
 
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getEventDescription() {
+        return eventDescription;
+    }
+
+    public void setEventDescription(String eventDescription) {
+        this.eventDescription = eventDescription;
+    }
+
     public LocalDateTime getEventDate() {
         return eventDate;
     }
 
     public void setEventDate(LocalDateTime eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public User getPerformedBy() {
+        return performedBy;
+    }
+
+    public void setPerformedBy(User performedBy) {
+        this.performedBy = performedBy;
     }
 }
