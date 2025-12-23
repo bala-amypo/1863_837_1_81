@@ -5,6 +5,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.entity.User;
+
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
