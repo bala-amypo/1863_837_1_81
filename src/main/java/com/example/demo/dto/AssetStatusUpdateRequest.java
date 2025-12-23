@@ -1,9 +1,12 @@
-// AssetStatusUpdateRequest.java (used in AssetController)
 package com.example.demo.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AssetStatusUpdateRequest {
     private String status;
 }
