@@ -9,8 +9,8 @@ import com.example.demo.repository.AssetRepository;
 import com.example.demo.repository.DisposalRecordRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.DisposalRecordService;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,7 +55,6 @@ public class DisposalRecordServiceImpl implements DisposalRecordService {
         disposal.setAsset(asset);
         disposal.setApprovedBy(approver);
 
-        // Required by test t85
         asset.setStatus("DISPOSED");
         assetRepository.save(asset);
 
