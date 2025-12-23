@@ -1,3 +1,4 @@
+// com/example/demo/service/impl/TransferRecordServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Asset;
@@ -35,10 +36,6 @@ public class TransferRecordServiceImpl implements TransferRecordService {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
-        if (record.getApprovedBy() == null || record.getApprovedBy().getId() == null) {
-            throw new ValidationException("Approver is required");
-        }
-
         User approver = userRepository.findById(record.getApprovedBy().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -62,7 +59,7 @@ public class TransferRecordServiceImpl implements TransferRecordService {
 
     @Override
     public List<TransferRecord> getTransfersForAsset(Long assetId) {
-        return transferRecordRepository.findByAsset_Id(assetId);
+        return transferRecordRepository.findByAsset_Id(assetId);  // ← underscore here
     }
 
     @Override
