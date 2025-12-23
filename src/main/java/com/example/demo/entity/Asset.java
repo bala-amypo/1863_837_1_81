@@ -1,9 +1,7 @@
-// Asset.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -23,14 +21,14 @@ public class Asset {
     private String assetTag;
 
     @Column(nullable = false)
-    private String assetType; // LAPTOP, DESKTOP, PRINTER, NETWORK_DEVICE, OTHER
+    private String assetType;
 
     private String model;
 
     private LocalDate purchaseDate;
 
     @Column(nullable = false)
-    private String status; // AVAILABLE, ASSIGNED, IN_REPAIR, TRANSFERRED, DISPOSED
+    private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "current_holder_id")
@@ -40,8 +38,12 @@ public class Asset {
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate() {
-        if (status == null) status = "AVAILABLE";
-        if (createdAt == null) createdAt = LocalDateTime.now();
+    public void prePersist() {          // ← MUST be named prePersist()
+        if (status == null) {
+            status = "AVAILABLE";
+        }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 }

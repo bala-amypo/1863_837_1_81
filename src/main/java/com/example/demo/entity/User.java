@@ -1,44 +1,49 @@
-// User.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "assets")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String fullName;
-
     @Column(unique = true, nullable = false)
-    private String email;
+    private String assetTag;
 
     @Column(nullable = false)
-    private String department;
+    private String assetType;
+
+    private String model;
+
+    private LocalDate purchaseDate;
 
     @Column(nullable = false)
-    private String role; // ADMIN, USER
+    private String status;
 
-    @Column(nullable = false)
-    private String password;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "current_holder_id")
+    private User currentHolder;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate() {
+    public void prePersist() {
         if (role == null) role = "USER";
         if (createdAt == null) createdAt = LocalDateTime.now();
+    }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 }
