@@ -1,103 +1,47 @@
+// Asset.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "assets")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String assetTag;
 
-    private String assetType; 
+    @Column(nullable = false)
+    private String assetType; // LAPTOP, DESKTOP, PRINTER, NETWORK_DEVICE, OTHER
+
     private String model;
 
     private LocalDate purchaseDate;
 
-    private String status;
+    @Column(nullable = false)
+    private String status; // AVAILABLE, ASSIGNED, IN_REPAIR, TRANSFERRED, DISPOSED
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "current_holder_id")
     private User currentHolder;
 
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() {
-        if (status == null) {
-            status = "AVAILABLE";
-        }
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAssetTag() {
-        return assetTag;
-    }
-
-    public void setAssetTag(String assetTag) {
-        this.assetTag = assetTag;
-    }
-
-    public String getAssetType() {
-        return assetType;
-    }
-
-    public void setAssetType(String assetType) {
-        this.assetType = assetType;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = purchaseDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public User getCurrentHolder() {
-        return currentHolder;
-    }
-
-    public void setCurrentHolder(User currentHolder) {
-        this.currentHolder = currentHolder;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    protected void onCreate() {
+        if (status == null) status = "AVAILABLE";
+        if (createdAt == null) createdAt = LocalDateTime.now();
     }
 }

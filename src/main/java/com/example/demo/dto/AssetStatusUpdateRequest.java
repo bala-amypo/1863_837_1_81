@@ -1,13 +1,9 @@
+// AssetStatusUpdateRequest.java (used in AssetController)
 package com.example.demo.dto;
 
+import lombok.Data;
+
+@Data
 public class AssetStatusUpdateRequest {
     private String status;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
