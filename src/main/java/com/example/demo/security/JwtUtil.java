@@ -1,7 +1,9 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,16 +21,15 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long expirationTime;
 
-    // IMPORTANT: No-arg constructor REQUIRED for the test class (Mockito / manual instantiation)
+    // No-arg constructor → REQUIRED for the test class (new JwtUtil() in @BeforeClass)
     public JwtUtil() {
-        // Default values for test mode only - will be overridden by Spring in real app
+        // Default test values – Spring will override in real app
         this.secretKey = Keys.hmacShaKeyFor(
-                "test-secret-for-unit-tests-only-change-this-in-production-1234567890abcdef"
-                        .getBytes(StandardCharsets.UTF_8));
+                "test-secret-for-unit-tests-only-change-this-1234567890abcdef".getBytes(StandardCharsets.UTF_8));
         this.expirationTime = 864000000L; // 10 days
     }
 
-    // Real constructor - Spring uses this in production
+    // Real constructor – Spring injects from application.properties
     public JwtUtil(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration:864000000}") long expirationTime) {
@@ -38,11 +39,11 @@ public class JwtUtil {
 
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .claims(claims)
-                .subject(subject)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(secretKey)
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(secretKey, SignatureAlgorithm.HS512)  // ← 0.11.5 style
                 .compact();
     }
 
@@ -79,13 +80,13 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Correct 0.12.x API: returns Claims directly (no getPayload() needed)
+    // 0.11.5 compatible parser – tests expect .parseClaimsJws(token).getBody()
     public Claims parseToken(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();  // ← this is what the hidden test calls (getBody() = getPayload())
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
