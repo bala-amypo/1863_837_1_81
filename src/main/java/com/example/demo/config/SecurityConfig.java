@@ -26,12 +26,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            // Disable CSRF (required for stateless JWT REST API)
             .csrf(csrf -> csrf.disable())
+
+            // Define public & protected endpoints
             .authorizeHttpRequests(auth -> auth
+                // Public: login, register, Swagger
                 .requestMatchers("/auth/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                // All other endpoints require authentication
                 .anyRequest().authenticated()
             )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+            // Stateless session (no cookies/sessions)
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+
+            // Add our JWT filter before the default UsernamePassword filter
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
