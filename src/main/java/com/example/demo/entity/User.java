@@ -2,46 +2,43 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "assets")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Asset {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String fullName;
+
     @Column(unique = true, nullable = false)
-    private String assetTag;
+    private String email;
 
     @Column(nullable = false)
-    private String assetType;
-
-    private String model;
-
-    private LocalDate purchaseDate;
+    private String department;
 
     @Column(nullable = false)
-    private String status;
+    private String role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "current_holder_id")
-    private User currentHolder;
+    @Column(nullable = false)
+    private String password;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        if (role == null) role = "USER";
-        if (createdAt == null) createdAt = LocalDateTime.now();
-    }
+        if (role == null) {
+            role = "USER";
+        }
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }

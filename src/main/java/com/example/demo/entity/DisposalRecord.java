@@ -6,42 +6,38 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "assets")
+@Table(name = "disposal_records")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Asset {
+public class DisposalRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String assetTag;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_id", nullable = false, unique = true)
+    private Asset asset;
 
     @Column(nullable = false)
-    private String assetType;
-
-    private String model;
-
-    private LocalDate purchaseDate;
+    private String disposalMethod;
 
     @Column(nullable = false)
-    private String status;
+    private LocalDate disposalDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "current_holder_id")
-    private User currentHolder;
+    @JoinColumn(name = "approved_by_id", nullable = false)
+    private User approvedBy;
+
+    private String notes;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() {          // ← MUST be named prePersist()
-        if (status == null) {
-            status = "AVAILABLE";
-        }
+    public void prePersist() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }

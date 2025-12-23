@@ -38,7 +38,7 @@ public class Asset {
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() {          // ← MUST be named prePersist()
+    public void prePersist() {
         if (status == null) {
             status = "AVAILABLE";
         }
