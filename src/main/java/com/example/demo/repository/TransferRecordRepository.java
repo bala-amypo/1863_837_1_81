@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TransferRecordRepository extends JpaRepository<TransferRecord, Long> {
-    List<TransferRecord> findByAsset_Id(Long assetId);   // ← underscore is required by tests
+    List<TransferRecord> findByAsset_Id(Long assetId);  // ← MUST have underscore
 }
