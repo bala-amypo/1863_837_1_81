@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -10,25 +10,25 @@ public class LifecycleEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String eventType;
+    private String description;
+
     @ManyToOne
-    @JoinColumn(name = "asset_id")
     private Asset asset;
-
-    private String eventType; 
-
-    private String eventDescription;
 
     private LocalDateTime eventDate;
 
-    @ManyToOne
-    @JoinColumn(name = "performed_by_id")
-    private User performedBy;
+    public LifecycleEvent() {
+    }
 
-    @PrePersist
-    public void prePersist() {
-        if (eventDate == null) {
-            eventDate = LocalDateTime.now();
-        }
+    public LifecycleEvent(Long id, String eventType,
+                          String description, Asset asset,
+                          LocalDateTime eventDate) {
+        this.id = id;
+        this.eventType = eventType;
+        this.description = description;
+        this.asset = asset;
+        this.eventDate = eventDate;
     }
 
     public Long getId() {
@@ -39,14 +39,6 @@ public class LifecycleEvent {
         this.id = id;
     }
 
-    public Asset getAsset() {
-        return asset;
-    }
-
-    public void setAsset(Asset asset) {
-        this.asset = asset;
-    }
-
     public String getEventType() {
         return eventType;
     }
@@ -55,12 +47,20 @@ public class LifecycleEvent {
         this.eventType = eventType;
     }
 
-    public String getEventDescription() {
-        return eventDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
     }
 
     public LocalDateTime getEventDate() {
@@ -69,13 +69,5 @@ public class LifecycleEvent {
 
     public void setEventDate(LocalDateTime eventDate) {
         this.eventDate = eventDate;
-    }
-
-    public User getPerformedBy() {
-        return performedBy;
-    }
-
-    public void setPerformedBy(User performedBy) {
-        this.performedBy = performedBy;
     }
 }

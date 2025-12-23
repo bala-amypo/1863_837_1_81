@@ -1,8 +1,7 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 public class DisposalRecord {
@@ -12,26 +11,20 @@ public class DisposalRecord {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "asset_id")
     private Asset asset;
 
-    private String disposalMethod; 
-
+    private String reason;
     private LocalDate disposalDate;
 
-    @ManyToOne
-    @JoinColumn(name = "approved_by_id")
-    private User approvedBy;
+    public DisposalRecord() {
+    }
 
-    private String notes;
-
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
+    public DisposalRecord(Long id, Asset asset,
+                          String reason, LocalDate disposalDate) {
+        this.id = id;
+        this.asset = asset;
+        this.reason = reason;
+        this.disposalDate = disposalDate;
     }
 
     public Long getId() {
@@ -50,12 +43,12 @@ public class DisposalRecord {
         this.asset = asset;
     }
 
-    public String getDisposalMethod() {
-        return disposalMethod;
+    public String getReason() {
+        return reason;
     }
 
-    public void setDisposalMethod(String disposalMethod) {
-        this.disposalMethod = disposalMethod;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public LocalDate getDisposalDate() {
@@ -64,29 +57,5 @@ public class DisposalRecord {
 
     public void setDisposalDate(LocalDate disposalDate) {
         this.disposalDate = disposalDate;
-    }
-
-    public User getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(User approvedBy) {
-        this.approvedBy = approvedBy;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }

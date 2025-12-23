@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -11,18 +11,28 @@ public class TransferRecord {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "asset_id")
     private Asset asset;
 
-    private String fromDepartment;
+    @ManyToOne
+    private User fromUser;
 
-    private String toDepartment;
+    @ManyToOne
+    private User toUser;
 
     private LocalDate transferDate;
 
-    @ManyToOne
-    @JoinColumn(name = "approved_by_id")
-    private User approvedBy;
+    public TransferRecord() {
+    }
+
+    public TransferRecord(Long id, Asset asset,
+                          User fromUser, User toUser,
+                          LocalDate transferDate) {
+        this.id = id;
+        this.asset = asset;
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.transferDate = transferDate;
+    }
 
     public Long getId() {
         return id;
@@ -40,20 +50,20 @@ public class TransferRecord {
         this.asset = asset;
     }
 
-    public String getFromDepartment() {
-        return fromDepartment;
+    public User getFromUser() {
+        return fromUser;
     }
 
-    public void setFromDepartment(String fromDepartment) {
-        this.fromDepartment = fromDepartment;
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
     }
 
-    public String getToDepartment() {
-        return toDepartment;
+    public User getToUser() {
+        return toUser;
     }
 
-    public void setToDepartment(String toDepartment) {
-        this.toDepartment = toDepartment;
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
     }
 
     public LocalDate getTransferDate() {
@@ -62,13 +72,5 @@ public class TransferRecord {
 
     public void setTransferDate(LocalDate transferDate) {
         this.transferDate = transferDate;
-    }
-
-    public User getApprovedBy() {
-        return approvedBy;
-    }
-
-    public void setApprovedBy(User approvedBy) {
-        this.approvedBy = approvedBy;
     }
 }

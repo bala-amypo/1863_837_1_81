@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -11,30 +11,32 @@ public class Asset {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String assetTag;
-
-    private String assetType; 
+    private String assetType;
     private String model;
-
     private LocalDate purchaseDate;
-
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "current_holder_id")
     private User currentHolder;
 
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void prePersist() {
-        if (status == null) {
-            status = "AVAILABLE";
-        }
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
+    public Asset() {
+    }
+
+    public Asset(Long id, String assetTag, String assetType,
+                 String model, LocalDate purchaseDate,
+                 String status, User currentHolder,
+                 LocalDateTime createdAt) {
+        this.id = id;
+        this.assetTag = assetTag;
+        this.assetType = assetType;
+        this.model = model;
+        this.purchaseDate = purchaseDate;
+        this.status = status;
+        this.currentHolder = currentHolder;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
