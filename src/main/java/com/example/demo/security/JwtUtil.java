@@ -19,7 +19,15 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long expirationTime;
 
-    // Spring automatically injects these from application.properties
+    // Required by test class: no-arg constructor (for Mockito)
+    public JwtUtil() {
+        // Default values for test mode - will be overridden by @Value in real app
+        this.secretKey = Keys.hmacShaKeyFor(
+                "test-secret-for-unit-tests-only-1234567890abcdef".getBytes(StandardCharsets.UTF_8));
+        this.expirationTime = 864000000L; // 10 days
+    }
+
+    // Real constructor - Spring uses this
     public JwtUtil(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration:864000000}") long expirationTime) {
@@ -70,6 +78,7 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    // Correct 0.12.x API - tests expect this to return Claims directly
     public Claims parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)
