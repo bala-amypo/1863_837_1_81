@@ -1,9 +1,7 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,14 +19,13 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long expirationTime;
 
-    // No-arg constructor – REQUIRED by test class (new JwtUtil() in @BeforeClass)
+    // No-arg constructor for test class
     public JwtUtil() {
         this.secretKey = Keys.hmacShaKeyFor(
                 "test-secret-for-unit-tests-only-1234567890abcdef".getBytes(StandardCharsets.UTF_8));
-        this.expirationTime = 864000000L; // 10 days default for tests
+        this.expirationTime = 864000000L;
     }
 
-    // Spring constructor – reads from application.properties
     public JwtUtil(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration:864000000}") long expirationTime) {
@@ -42,7 +39,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(secretKey, SignatureAlgorithm.HS512)  // 0.11.5 style
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -79,20 +76,16 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    /**
-     * 0.11.5 compatible parser - tests call .parseToken(token).getPayload() or expect getBody()
-     * This method returns Claims directly, but matches test expectation
-     */
-    public Claims parseToken(String token) {
+    // Return Jws<Claims> so test can call .getPayload() on it
+    public Jws<Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();  // This is the old API the test expects
+                .parseClaimsJws(token);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = parseToken(token);
+        final Claims claims = parseToken(token).getBody(); // use .getBody() internally
         return claimsResolver.apply(claims);
     }
 }
