@@ -21,15 +21,14 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long expirationTime;
 
-    // No-arg constructor → REQUIRED for the test class (new JwtUtil() in @BeforeClass)
+    // No-arg constructor – REQUIRED by test class (new JwtUtil() in @BeforeClass)
     public JwtUtil() {
-        // Default test values – Spring will override in real app
         this.secretKey = Keys.hmacShaKeyFor(
-                "test-secret-for-unit-tests-only-change-this-1234567890abcdef".getBytes(StandardCharsets.UTF_8));
-        this.expirationTime = 864000000L; // 10 days
+                "test-secret-for-unit-tests-only-1234567890abcdef".getBytes(StandardCharsets.UTF_8));
+        this.expirationTime = 864000000L; // 10 days default for tests
     }
 
-    // Real constructor – Spring injects from application.properties
+    // Spring constructor – reads from application.properties
     public JwtUtil(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration:864000000}") long expirationTime) {
@@ -43,7 +42,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(secretKey, SignatureAlgorithm.HS512)  // ← 0.11.5 style
+                .signWith(secretKey, SignatureAlgorithm.HS512)  // 0.11.5 style
                 .compact();
     }
 
@@ -80,13 +79,16 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // 0.11.5 compatible parser – tests expect .parseClaimsJws(token).getBody()
+    /**
+     * 0.11.5 compatible parser - tests call .parseToken(token).getPayload() or expect getBody()
+     * This method returns Claims directly, but matches test expectation
+     */
     public Claims parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
-                .getBody();  // ← this is what the hidden test calls (getBody() = getPayload())
+                .getBody();  // This is the old API the test expects
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
