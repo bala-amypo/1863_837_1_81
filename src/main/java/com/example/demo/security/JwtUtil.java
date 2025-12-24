@@ -80,16 +80,20 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // This exact method signature + return type is expected by the test
+    /**
+     * Updated for jjwt 0.12.x - uses the new parser API
+     * This method signature remains Jws<Claims> so your existing tests should work
+     */
     public Jws<Claims> parseToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+        return Jwts.parser()
+                .verifyWith(secretKey)              // ← new method in 0.12+
                 .build()
-                .parseClaimsJws(token);
+                .parseSignedClaims(token);          // ← new method name (replaces parseClaimsJws)
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = parseToken(token).getBody();
+        // Updated to use getPayload() instead of getBody()
+        final Claims claims = parseToken(token).getPayload();
         return claimsResolver.apply(claims);
     }
 }
