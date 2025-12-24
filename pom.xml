@@ -21,8 +21,8 @@
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        
-        <jjwt.version>0.11.5</jjwt.version>
+
+        <jjwt.version>0.12.6</jjwt.version>
         <springdoc.version>2.6.0</springdoc.version>
         <lombok.version>1.18.34</lombok.version>
     </properties>
