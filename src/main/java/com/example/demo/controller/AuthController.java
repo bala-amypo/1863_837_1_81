@@ -49,7 +49,6 @@ public class AuthController {
                         loginRequest.getPassword())
         );
 
-        // After successful authentication we can get the user
         User user = userService.getUserByEmail(loginRequest.getEmail());
 
         String token = jwtUtil.generateTokenForUser(user);
