@@ -4,7 +4,6 @@ import com.example.demo.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,11 +38,11 @@ public class JwtUtil {
 
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeMs))
-                .signWith(secretKey, SignatureAlgorithm.HS512)
+                .claims(claims)                                      // ← modern replacement
+                .subject(subject)                                    // ← modern
+                .issuedAt(new Date())                                // ← modern
+                .expiration(new Date(System.currentTimeMillis() + expirationTimeMs))
+                .signWith(secretKey)                                 // ← modern (algorithm auto-detected)
                 .compact();
     }
 
@@ -81,18 +80,16 @@ public class JwtUtil {
     }
 
     /**
-     * Updated for jjwt 0.12.x - uses the new parser API
-     * This method signature remains Jws<Claims> so your existing tests should work
+     * Modern parser style - compatible with jjwt 0.12.x and keeps getPayload() for tests
      */
     public Jws<Claims> parseToken(String token) {
         return Jwts.parser()
-                .verifyWith(secretKey)              // ← new method in 0.12+
+                .verifyWith(secretKey)
                 .build()
-                .parseSignedClaims(token);          // ← new method name (replaces parseClaimsJws)
+                .parseSignedClaims(token);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        // Updated to use getPayload() instead of getBody()
         final Claims claims = parseToken(token).getPayload();
         return claimsResolver.apply(claims);
     }
