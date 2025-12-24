@@ -1,4 +1,3 @@
-// com/example/demo/service/impl/TransferRecordServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Asset;
@@ -59,7 +58,7 @@ public class TransferRecordServiceImpl implements TransferRecordService {
 
     @Override
     public List<TransferRecord> getTransfersForAsset(Long assetId) {
-        return transferRecordRepository.findByAsset_Id(assetId);  // ← underscore here
+        return transferRecordRepository.findByAsset_Id(assetId); 
     }
 
     @Override

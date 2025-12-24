@@ -1,4 +1,3 @@
-// com/example/demo/service/impl/LifecycleEventServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Asset;
@@ -54,7 +53,7 @@ public class LifecycleEventServiceImpl implements LifecycleEventService {
 
     @Override
     public List<LifecycleEvent> getEventsForAsset(Long assetId) {
-        return lifecycleEventRepository.findByAsset_Id(assetId);  // ← underscore here
+        return lifecycleEventRepository.findByAsset_Id(assetId);  
     }
 
     @Override

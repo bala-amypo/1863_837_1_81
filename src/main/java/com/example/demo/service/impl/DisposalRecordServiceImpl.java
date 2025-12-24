@@ -55,7 +55,6 @@ public class DisposalRecordServiceImpl implements DisposalRecordService {
         disposal.setAsset(asset);
         disposal.setApprovedBy(approver);
 
-        // Required by test t85
         asset.setStatus("DISPOSED");
         assetRepository.save(asset);
 
