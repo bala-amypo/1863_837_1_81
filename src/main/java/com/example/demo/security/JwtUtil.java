@@ -21,12 +21,11 @@ public class JwtUtil {
     private final SecretKey secretKey;
     private final long expirationTimeMs;
 
-    // No-arg constructor required by the test class
     public JwtUtil() {
         this.secretKey = Keys.hmacShaKeyFor(
                 "test-secret-for-unit-tests-only-this-is-very-important-1234567890abcdef"
                         .getBytes(StandardCharsets.UTF_8));
-        this.expirationTimeMs = 864_000_000L; // ~10 days
+        this.expirationTimeMs = 864_000_000L;
     }
 
     public JwtUtil(
@@ -38,11 +37,11 @@ public class JwtUtil {
 
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .claims(claims)                                      // ← modern replacement
-                .subject(subject)                                    // ← modern
-                .issuedAt(new Date())                                // ← modern
+                .claims(claims)
+                .subject(subject)
+                .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationTimeMs))
-                .signWith(secretKey)                                 // ← modern (algorithm auto-detected)
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -79,9 +78,6 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    /**
-     * Modern parser style - compatible with jjwt 0.12.x and keeps getPayload() for tests
-     */
     public Jws<Claims> parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)
